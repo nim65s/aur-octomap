@@ -2,40 +2,31 @@
 # Contributor: Andrew Sun <adsun701 at gmail dot com>
 # Contributor: Benjamin Chrétien <chretien dot b+arch at gmail dot com>
 # Contributor: Soo-Hyun Yoo <yoos117 at gmail dot com>
+# Contributor: Guilhem Saurel <guilhem.saurel at laas dot fr>
 
 pkgname=octomap
-pkgver=1.9.8
+pkgver=1.10.0
 pkgrel=1
 pkgdesc="Efficient probabilistic 3D mapping framework based on octrees"
 arch=('i686' 'x86_64')
-url="https://octomap.github.io/"
-license=('BSD')
-depends=('gcc-libs')
+url="https://github.com/$pkgname/$pkgname"
+license=('BSD-3-Clause')
+depends=('gcc-libs' 'qt5-base' 'glu' 'libglvnd' 'glibc')
 makedepends=('cmake')
 provides=('octomap')
 conflicts=('octomap-git')
 options=('staticlibs')
-source=("${pkgname}-${pkgver}.tar.gz"::"https://github.com/OctoMap/octomap/archive/v${pkgver}.tar.gz"
-        "iterator.patch::https://patch-diff.githubusercontent.com/raw/OctoMap/octomap/pull/373.patch")
-sha256sums=('417af6da4e855e9a83b93458aa98b01a2c88f880088baad2b59d323ce162586e'
-            'SKIP')
-
-prepare() {
-    cd "$srcdir/octomap-$pkgver"
-    patch -Np1 -i "$srcdir/iterator.patch"
-}
+source=("${pkgname}-${pkgver}.tar.gz"::"$url/archive/v${pkgver}.tar.gz")
+sha256sums=('8da2576ec6a0993e8900db7f91083be8682d8397a7be0752c85d1b7dd1b8e992')
 
 build() {
-    cd "$srcdir/octomap-$pkgver/octomap"
-    mkdir build && cd build
-    cmake .. \
-        -DCMAKE_INSTALL_PREFIX=/usr
-    make
+    cmake -B "build-$pkgver" -S "$pkgbase-$pkgver" \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -Wno-dev
+    cmake --build "build-$pkgver"
 }
 
 package() {
-    cd "$srcdir/octomap-$pkgver/octomap"
-    cd build
-    make DESTDIR="${pkgdir}" install
-    install -Dm644 ../LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
+    DESTDIR="$pkgdir/" cmake --build "build-$pkgver" -t install
+    install -Dm644 "$pkgbase-$pkgver/$pkgbase/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
