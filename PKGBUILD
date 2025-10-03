@@ -23,6 +23,7 @@ build() {
     cmake -B "build-$pkgver" -S "$pkgbase-$pkgver" \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         -Wno-dev
     cmake --build "build-$pkgver"
 }
