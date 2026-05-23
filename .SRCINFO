@@ -1,14 +1,13 @@
 pkgbase = octomap
 	pkgdesc = Efficient probabilistic 3D mapping framework based on octrees
 	pkgver = 1.10.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/octomap/octomap
 	arch = i686
 	arch = x86_64
 	license = BSD-3-Clause
 	makedepends = cmake
 	depends = gcc-libs
-	depends = qt5-base
 	depends = glu
 	depends = libglvnd
 	depends = glibc

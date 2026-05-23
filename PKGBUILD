@@ -6,12 +6,12 @@
 
 pkgname=octomap
 pkgver=1.10.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Efficient probabilistic 3D mapping framework based on octrees"
 arch=('i686' 'x86_64')
 url="https://github.com/$pkgname/$pkgname"
 license=('BSD-3-Clause')
-depends=('gcc-libs' 'qt5-base' 'glu' 'libglvnd' 'glibc')
+depends=('gcc-libs' 'glu' 'libglvnd' 'glibc')
 makedepends=('cmake')
 provides=('octomap')
 conflicts=('octomap-git')
@@ -24,6 +24,7 @@ build() {
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DCMAKE_CXX_FLAGS="-Wno-stringop-overread" \
         -Wno-dev
     cmake --build "build-$pkgver"
 }
